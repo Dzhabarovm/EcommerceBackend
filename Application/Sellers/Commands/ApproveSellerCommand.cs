@@ -1,9 +1,7 @@
-﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Application.Common.Interfaces;
+using Domain.Entities;
+using Domain.Enums;
+using MediatR;
 
 namespace Application.Sellers.Commands
 {
@@ -12,15 +10,24 @@ namespace Application.Sellers.Commands
 
     public class ApproveSellerCommandHandler : IRequestHandler<ApproveSellerCommand>
     {
-        private readonly EcommerceDbContext _context;
+        private readonly IApplicationDbContext _context;
+
+        public ApproveSellerCommandHandler(IApplicationDbContext context)
+        {
+            _context = context;
+        }
 
         public async Task Handle(ApproveSellerCommand request, CancellationToken ct)
         {
             var user = await _context.Users.FindAsync(request.UserId);
+            if (user == null)
+                throw new InvalidOperationException("Пользователь не найден");
+
             user.Role = UserRole.Seller;
 
             var shop = new Shop
             {
+                Id = Guid.NewGuid(),
                 Name = request.ShopName,
                 Description = request.ShopDescription,
                 SellerId = request.UserId

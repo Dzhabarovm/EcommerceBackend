@@ -1,4 +1,8 @@
+using Application.Common.Interfaces;
+using Infrastructure.Data;
 using Infrastructure.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddSingleton<IConnectionMultiplexer>(
     ConnectionMultiplexer.Connect(builder.Configuration["Redis:ConnectionString"]!));
+
+builder.Services.AddDbContext<IApplicationDbContext, EcommerceDbContext>(options =>
+    options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<ITelegramService, TelegramService>();
 
