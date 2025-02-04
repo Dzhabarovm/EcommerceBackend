@@ -1,21 +1,22 @@
-﻿using Domain.Entities;
+﻿using Application.Common.Interfaces;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Data
 {
-    public class EcommerceDbContext : DbContext
+    public class EcommerceDbContext : DbContext, IApplicationDbContext
     {
-        public DbSet<User> Users { get; set; }
-        public DbSet<Product> Products { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        public EcommerceDbContext(DbContextOptions<EcommerceDbContext> options)
+            : base(options)
         {
-            options.UseNpgsql("Host=localhost;Port=5432;Database=ecommerce;Username=postgres;Password=52545658");
+        }
+
+        public DbSet<Product> Products { get; set; } = null!;
+        public DbSet<Shop> Shops { get; set; } = null!;
+
+        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            return await base.SaveChangesAsync(cancellationToken);
         }
     }
 }
