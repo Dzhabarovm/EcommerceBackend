@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using Application.Sellers.Commands;
+using Domain.Enums;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,7 +45,7 @@ namespace Api.Controllers
 
             try
             {
-                await _mediator.Send(new ApproveApplicationCommand(id, request.ShopName, request.ShopDescription));
+                await _mediator.Send(new ApproveSellerCommand(id, request.ShopName, request.ShopDescription));
                 _logger.LogInformation("Заявка {ApplicationId} успешно одобрена", id);
                 return NoContent();
             }

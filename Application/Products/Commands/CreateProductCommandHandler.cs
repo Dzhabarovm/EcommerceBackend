@@ -7,10 +7,12 @@ namespace Application.Products.Commands
     public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Guid>
     {
         private readonly IApplicationDbContext _context;
+        private readonly IImageService _imageService;
 
-        public CreateProductCommandHandler(IApplicationDbContext context)
+        public CreateProductCommandHandler(IApplicationDbContext context, IImageService imageService)
         {
             _context = context;
+            _imageService = imageService;
         }
 
         public async Task<Guid> Handle(CreateProductCommand request, CancellationToken cancellationToken)
@@ -23,6 +25,8 @@ namespace Application.Products.Commands
             if (!categoryExists)
                 throw new InvalidOperationException("Категория не найдена");
 
+            string imageUrl = await _imageService.SaveImageAsync(request.Image);
+
             var product = new Product
             {
                 Id = Guid.NewGuid(),
@@ -30,7 +34,7 @@ namespace Application.Products.Commands
                 Description = request.Description,
                 Price = request.Price,
                 ShopId = request.ShopId,
-                Images = new List<string> { request.ImageUrl },
+                Images = new List<string> { imageUrl },
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             };

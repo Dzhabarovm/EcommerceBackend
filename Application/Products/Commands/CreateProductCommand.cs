@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Microsoft.AspNetCore.Http;
+using MediatR;
 
 namespace Application.Products.Commands
 {
@@ -8,6 +9,7 @@ namespace Application.Products.Commands
     string Description,
     int StockQuantity,
     Guid ShopId,
-    string ImageUrl // URL изображения (генерируется в обработчике)
+    Guid CategoryId,
+    IFormFile Image // URL изображения (генерируется в обработчике)
 ) : IRequest<Guid>;
 }
