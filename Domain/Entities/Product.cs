@@ -1,16 +1,21 @@
-﻿namespace Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Domain.Entities
 {
     public class Product
     {
         public Guid Id { get; set; }
 
+        [MaxLength(150)]
         public string Name { get; set; } = string.Empty; // Защита от null
+        [MaxLength(500)]
         public string Description { get; set; } = string.Empty;
 
+        [Range(0, double.MaxValue, ErrorMessage = "Цена должна быть неотрицательной.")]
         public decimal Price { get; set; }
 
-        public Guid ShopId { get; set; }
-        public Shop Shop { get; set; }
+        public Guid StoreId { get; set; }
+        public Store Store { get; set; }
 
         public List<string> Images { get; set; } = new();
 

@@ -25,12 +25,12 @@ namespace Application.Sellers.Commands
 
             user.Role = UserRole.Seller;
 
-            var shop = new Shop
+            var shop = new Store
             {
                 Id = Guid.NewGuid(),
                 Name = request.ShopName,
                 Description = request.ShopDescription,
-                SellerId = request.UserId
+                OwnerId = request.UserId
             };
 
             await _context.Shops.AddAsync(shop, ct);

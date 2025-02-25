@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Data.Configurations
 {
-    public class ShopConfiguration : IEntityTypeConfiguration<Shop>
+    public class ShopConfiguration : IEntityTypeConfiguration<Store>
     {
-        public void Configure(EntityTypeBuilder<Shop> builder)
+        public void Configure(EntityTypeBuilder<Store> builder)
         {
-            builder.HasOne(s => s.Seller)
-                .WithOne(u => u.Shop)
-                .HasForeignKey<Shop>(s => s.SellerId)
+            builder.HasOne(s => s.Owner)
+                .WithOne(u => u.Stores)
+                .HasForeignKey<Store>(s => s.SellerId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

@@ -6,7 +6,7 @@ namespace Application.Common.Interfaces
     public interface IApplicationDbContext
     {
         DbSet<Product> Products { get; }
-        DbSet<Shop> Shops { get; }
+        DbSet<Store> Shops { get; }
         DbSet<Category> Categories { get; }
         DbSet<User> Users { get; }
 
